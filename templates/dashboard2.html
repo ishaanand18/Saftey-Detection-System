@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KeepMeSafe | Your Proactive Safety Companion</title>
+  <style>
+    :root {
+      --color-primary-blue: #4F46E5;
+      --color-text-dark: #1F2937;
+      --color-text-medium: #4B5563;
+      --color-light-bg: #FFFFFF;
+      --color-border-light: #E0E7FF;
+      --color-gradient-start: #F0F9FF;
+      --color-gradient-end: #EDE9FE;
+      --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-family-sans);
+      min-height: 100vh;
+      color: var(--color-text-medium);
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .header {
+      padding: 1rem 0;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--color-border-light);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--color-text-dark);
+    }
+
+    .logo-text .highlight,
+    .hero-title .highlight {
+      color: var(--color-primary-blue);
+    }
+
+    .nav-links {
+      display: none;
+      gap: 1.5rem;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--color-text-medium);
+      transition: color 0.15s ease-in-out;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-primary-blue);
+    }
+
+    .hero-section {
+      padding: 4rem 0 6rem;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--color-text-dark);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .hero-subline {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--color-text-medium);
+      margin-bottom: 3rem;
+    }
+
+    .hero-subline strong {
+      color: var(--color-primary-blue);
+      font-weight: 600;
+    }
+
+    .cta-card {
+      background-color: var(--color-light-bg);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid var(--color-border-light);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+
+    .cta-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .cta-card h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--color-text-dark);
+      margin-bottom: 1rem;
+    }
+
+    .cta-card p {
+      font-size: 1.125rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .prediction-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: white;
+      background-color: var(--color-primary-blue);
+      border-radius: 9999px;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.5), 0 4px 6px -2px rgba(79, 70, 229, 0.05);
+    }
+
+    .prediction-button:hover {
+      background-color: #4338CA;
+      transform: scale(1.03);
+    }
+
+    .cta-card .small-text {
+      font-size: 0.875rem;
+      color: #9CA3AF;
+      margin-top: 1rem;
+    }
+
+    .features-section {
+      padding: 4rem 0;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .features-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--color-text-dark);
+      margin-bottom: 3rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .feature-card {
+      padding: 1.5rem;
+      background-color: var(--color-light-bg);
+      border-radius: 1rem;
+      border: 1px solid var(--color-border-light);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .feature-card .number {
+      font-size: 1.875rem;
+      font-weight: 800;
+      color: var(--color-primary-blue);
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+    }
+
+    .footer {
+      padding: 3rem 0;
+      background-color: rgba(79, 70, 229, 0.05);
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .footer h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text-dark);
+      margin-bottom: 1rem;
+    }
+
+    .footer p {
+      margin-bottom: 1.5rem;
+      color: var(--color-text-medium);
+    }
+
+    .footer .copyright {
+      font-size: 0.875rem;
+      color: #6B7280;
+      margin-top: 2rem;
+    }
+
+    @media (min-width: 640px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-title {
+        font-size: 4.5rem;
+      }
+      .hero-section {
+        padding: 6rem 0 8rem;
+      }
+      .feature-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .cta-card h2 {
+        font-size: 2.5rem;
+      }
+    }
+
+    /* Chatbot Floating Button + Window */
+    .chatbot-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background-color: var(--color-primary-blue);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 20px rgba(79, 70, 229, 0.4);
+      transition: transform 0.3s ease;
+      z-index: 999;
+    }
+
+    .chatbot-button:hover {
+      transform: scale(1.1);
+    }
+
+    .chatbot-window {
+      display: none;
+      position: fixed;
+      bottom: 95px;
+      right: 25px;
+      width: 340px;
+      height: 450px;
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      flex-direction: column;
+      z-index: 998;
+    }
+
+    .chatbot-header {
+      background-color: var(--color-primary-blue);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chatbot-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      font-size: 0.95rem;
+    }
+
+    .chatbot-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      border: none;
+      padding: 0.75rem;
+      outline: none;
+    }
+
+    .chatbot-input button {
+      background-color: var(--color-primary-blue);
+      color: white;
+      border: none;
+      padding: 0 1.25rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <svg class="w-8 h-8" style="width: 2rem; height: 2rem; color: var(--color-primary-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2c4.137 0 7.828 2.378 9.618 5.984M2.382 7.984A11.956 11.956 0 0112 22 11.957 11.957 0 012.382 16.016m17.236-8.032A11.956 11.956 0 0112 22m0-20c-4.137 0-7.828 2.378-9.618 5.984">
+            </path>
+          </svg>
+          <span class="logo-text">Keep<span class="highlight">Me</span>Safe</span>
+        </div>
+        <nav class="nav-links">
+          <a href="#">Features</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="container">
+        <div class="logo" style="display: flex; justify-content: center; align-items: center;">
+                <svg class="w-8 h-8" style="width: 8rem; color: var(--color-primary-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2c4.137 0 7.828 2.378 9.618 5.984M2.382 7.984A11.956 11.956 0 0112 22 11.957 11.957 0 012.382 16.016m17.236-8.032A11.956 11.956 0 0112 22m0-20c-4.137 0-7.828 2.378-9.618 5.984">
+                </path>
+                </svg>
+        </div>
+      <h1 class="hero-title">Keep<span class="highlight">Me</span>Safe</h1>
+      <p class="hero-subline">Your <strong>proactive safety prediction</strong> companion.</p>
+      <div class="cta-card">
+        <h2>Know the risk before you go.</h2>
+        <p>Using advanced ML analysis of historical patterns and real-time data, we estimate safety scores for any location, time, and crowd.</p>
+        <a href="{{ url_for('form') }}" class="prediction-button">Start Prediction Now</a>
+        <p class="small-text">Takes you to the live prediction tool.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features-section">
+    <div class="container">
+      <h2>How KeepMeSafe Works</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="number">01.</div>
+          <h3>Real-time Scoring</h3>
+          <p>Get instant, dynamic safety scores for any address or venue. Data is refreshed continuously for the most current insights.</p>
+        </div>
+        <div class="feature-card">
+          <div class="number">02.</div>
+          <h3>Explainable AI</h3>
+          <p>Understand why a risk score was assigned. We show contributing factors so you can make informed decisions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="number">03.</div>
+          <h3>Actionable Guidance</h3>
+          <p>Beyond just a score, receive immediate, context-specific safety tips based on the predicted scenario.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container" style="max-width: 600px;">
+      <h3>Ready to feel more secure?</h3>
+      <p>Join people using predictive insights to navigate their world with confidence.</p>
+      <a href="{{ url_for('form') }}" class="prediction-button" style="width:auto;padding:1rem 3rem;">Go To Prediction Page</a>
+      <p class="copyright">&copy; 2025 KeepMeSafe. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Chatbot -->
+  <button class="chatbot-button" id="chatbotToggle">💬</button>
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">KeepMeSafe Assistant</div>
+    <div class="chatbot-body" id="chatBody">Hi 👋 I'm your AI safety assistant! How can I help you today?</div>
+    <div id="typingIndicator" style="display:none; font-style: italic; color: #888;">Bot is typing...</div>
+    <div class="chatbot-input">
+      <input type="text" id="chatInput" placeholder="Type a message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+</div>
+  </div>
+
+  <script>
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatBody = document.getElementById('chatBody');
+    const sendBtn = document.getElementById('sendBtn');
+    const chatInput = document.getElementById('chatInput');
+
+    chatbotToggle.addEventListener('click', () => {
+      chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    sendBtn.addEventListener('click', async () => {
+  const msg = chatInput.value.trim();
+  if (!msg) return;
+
+  chatBody.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
+  chatInput.value = "";
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  // Show typing indicator
+  const typing = document.getElementById('typingIndicator');
+  typing.style.display = 'block';
+
+  try {
+    const response = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg })
+    });
+
+    const data = await response.json();
+
+    // Hide typing indicator and show bot reply
+    typing.style.display = 'none';
+    chatBody.innerHTML += `<div><strong>Bot:</strong> ${data.reply}</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+    } catch (error) {
+    typing.style.display = 'none';
+    chatBody.innerHTML += `<div><strong>Bot:</strong> Sorry, something went wrong 😅</div>`;
+    chatBody.scrollTop = chatBody.scrollHeight;
+    }
+    });
+
+
+    sendBtn.addEventListener('click', async () => {
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+
+      chatBody.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
+      chatInput.value = "";
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+
+        const data = await response.json();
+        chatBody.innerHTML += `<div><strong>Bot:</strong> ${data.reply}</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      } catch (error) {
+        chatBody.innerHTML += `<div><strong>Bot:</strong> Sorry, something went wrong 😅</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    });
+
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendBtn.click();
+    });
+  </script>
+</body>
+</html>

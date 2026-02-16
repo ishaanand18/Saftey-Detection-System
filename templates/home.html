@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KeepMeSafe — Safety Prediction System</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8; --glass:rgba(255,255,255,0.04);
+      --radius:14px; --maxw:1100px;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; background:linear-gradient(180deg,#071021 0%, #071827 60%); color:#e6eef6; -webkit-font-smoothing:antialiased}
+    .wrap{max-width:var(--maxw); margin:48px auto; padding:28px}
+
+    /* header / hero */
+    header{display:flex; align-items:center; gap:24px; justify-content:space-between}
+    .brand{display:flex; gap:14px; align-items:center}
+    .logo{width:56px; height:56px; background:linear-gradient(135deg,var(--accent),#7c3aed); border-radius:12px; display:grid; place-items:center; box-shadow:0 6px 18px rgba(7,12,20,0.6)}
+    .logo svg{width:34px; height:34px}
+    h1{margin:0; font-size:20px}
+    .tag{color:var(--muted); font-size:13px}
+
+    .hero{display:grid; grid-template-columns:1fr 420px; gap:32px; align-items:center; margin-top:28px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:28px; border-radius:var(--radius); box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .eyebrow{display:inline-block; padding:6px 10px; background:var(--glass); border-radius:999px; color:var(--muted); font-size:13px}
+    h2{margin:10px 0 6px; font-size:28px}
+    p.lead{color:var(--muted); line-height:1.5}
+
+    .features{display:flex; gap:12px; margin-top:18px}
+    .feat{flex:1; padding:12px; background:rgba(255,255,255,0.02); border-radius:10px}
+    .feat h4{margin:6px 0 0}
+    .cta{margin-top:20px; display:flex; gap:10px}
+    .btn{padding:12px 16px; border-radius:10px; cursor:pointer; border:0; font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#7c3aed); color:#021024}
+    .btn-ghost{background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04)}
+
+    /* mini prediction card */
+    .predict{display:flex; flex-direction:column; gap:12px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px}
+    .risk{display:flex; justify-content:space-between; align-items:center}
+    .risk .value{font-size:22px; font-weight:700}
+    .low{color:#34d399} .med{color:#f59e0b} .high{color:#fb7185}
+
+    label{font-size:13px; color:var(--muted)}
+    input, select{width:100%; padding:10px; margin-top:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit}
+    .small{font-size:13px}
+
+    footer{margin-top:34px; color:var(--muted); font-size:13px; text-align:center}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;}
+      .wrap{margin:18px auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden>
+          <!-- shield + eye icon -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l6 3v4c0 5-3.5 9-6 10-2.5-1-6-5-6-10V5l6-3z" fill="white" opacity="0.95"/></svg>
+        </div>
+        <div>
+          <h1>KeepMeSafe</h1>
+          <div class="tag">Predictive safety & risk insights for people at different times and places</div>
+        </div>
+      </div>
+      <nav class="small" style="display:flex;gap:12px;align-items:center">
+        <a class="small" href="#features">Features</a>
+        <a class="small" href="3predict">Try</a>
+        <a class="small" href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <section class="panel">
+        <span class="eyebrow">Beta • ML-driven</span>
+        <h2>Know the risk before you go</h2>
+        <p class="lead">KeepMeSafe uses historical incidents, time-of-day patterns to estimate safety risk for different locations for age group of different genders — so organisations and citizens can act proactively.</p>
+
+        <div class="features" id="features">
+          <div class="feat">
+            <strong>Real-time scoring</strong>
+            <div class="small">Quick, interpretable risk score for any address or venue.</div>
+          </div>
+          <div class="feat">
+            <strong>Explainable</strong>
+            <div class="small">Which factors contributed to the score — visible to analysts and users.</div>
+          </div>
+          <div class="feat">
+            <strong>Actionable</strong>
+            <div class="small">Suggestions & safety tips based on predicted scenarios.</div>
+          </div>
+        </div>
+
+        <div class="cta">
+          <button class="btn btn-primary" onclick="document.getElementById('predict-form').scrollIntoView({behavior:'smooth'})">Try a quick prediction</button>
+          <button class="btn btn-ghost">Request API access</button>
+        </div>
+
+        <div style="margin-top:18px; color:var(--muted); font-size:13px">Trusted in pilot by universities, events teams and city planners.</div>
+      </section>
+
+      <aside class="predict panel" id="predict">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small">Quick location risk</div>
+              <div class="risk"><div class="value">Risk score</div><div id="riskLabel" class="value med">Medium</div></div>
+            </div>
+            <div style="text-align:right; font-size:12px; color:var(--muted)">Updated just now</div>
+          </div>
+        </div>
+
+        <form id="predict-form" class="card" onsubmit="return runPredict(event)">
+          <label for="place">Place or address</label>
+          <input id="place" placeholder="e.g. MG Road, Bengaluru" required />
+
+          <label for="time">Time of day</label>
+          <select id="time">
+            <option>Morning (6am–12pm)</option>
+            <option>Afternoon (12pm–6pm)</option>
+            <option>Evening (6pm–10pm)</option>
+            <option>Night (10pm–6am)</option>
+          </select>
+
+          <label for="crowd">Expected crowd</label>
+          <select id="crowd">
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+
+          <div style="margin-top:10px; display:flex; gap:8px">
+            <button class="btn btn-primary" type="submit">Predict</button>
+            <button class="btn btn-ghost" type="button" onclick="demoFill()">Demo</button>
+          </div>
+        </form>
+
+        <div class="card" id="explain" style="display:none">
+          <strong>Why this score?</strong>
+          <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px">
+            <li id="f1">Nearby incident history</li>
+            <li id="f2">Time-of-day pattern</li>
+            <li id="f3">Crowd density</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <section style="display:flex; gap:16px; margin-top:28px; flex-wrap:wrap">
+      <div class="panel" style="flex:1; min-width:240px">
+        <h3 style="margin-top:0">For teams</h3>
+        <p class="small">Integrate safety scores into dispatch, event planning and maps. Export reports and alerts when thresholds are breached.</p>
+      </div>
+      <div class="panel" style="flex:1; min-width:240px">
+        <h3 style="margin-top:0">For citizens</h3>
+        <p class="small">Quick checks before travel, sharing safe routes, and receiving automated safety tips for destinations.</p>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div class="small">Built with care • © SafeSight 2025 • <a href="#" style="color:var(--muted); text-decoration:underline">Privacy</a></div>
+    </footer>
+  </div>
+
+  <script>
+    function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+    function runPredict(e){
+      e && e.preventDefault();
+      const place = document.getElementById('place').value || 'Unknown';
+      const time = document.getElementById('time').value;
+      const crowd = document.getElementById('crowd').value;
+
+      // simple demo scoring logic (placeholder for real model)
+      let score = 50;
+      if(time.includes('Night')) score += 20;
+      if(crowd==='High') score += 15;
+      if(place.toLowerCase().includes('station') || place.toLowerCase().includes('market')) score += 10;
+      // small randomness to make demo feel alive
+      score += randInt(-8,8);
+      score = Math.max(0, Math.min(100, score));
+
+      const labelEl = document.getElementById('riskLabel');
+      const explain = document.getElementById('explain');
+      explain.style.display = 'block';
+
+      if(score < 40){ labelEl.textContent = 'Low'; labelEl.className = 'value low' }
+      else if(score < 70){ labelEl.textContent = 'Medium'; labelEl.className = 'value med' }
+      else { labelEl.textContent = 'High'; labelEl.className = 'value high' }
+
+      // update explanation bullets (demo)
+      document.getElementById('f1').textContent = 'Nearby incident history: ' + (randInt(0,10)) + ' events in last year';
+      document.getElementById('f2').textContent = 'Time-of-day factor: ' + (time.match(/Night/) ? 'elevated' : 'normal');
+      document.getElementById('f3').textContent = 'Crowd effect: ' + crowd;
+
+      return false;
+    }
+    function demoFill(){
+      document.getElementById('place').value='City Central Station';
+      document.getElementById('time').value='Night (10pm–6am)';
+      document.getElementById('crowd').value='High';
+      runPredict();
+    }
+  </script>
+</body>
+</html>

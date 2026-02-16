@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safety Prediction Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --color-gradient-start: #F0F9FF; /* Very light blue */
+      --color-gradient-end: #EDE9FE;   /* Very light purple */
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      color: #4a4e69;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    #detectedLocation {
+      font-weight: 500;
+    }
+
+    button {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>Know Your Risk</h2>
+
+    <form action="/predict" method="POST">
+      <!-- Location Selection -->
+      <div class="mb-3">
+        <label class="form-label">Location</label>
+
+        <!-- Detect option -->
+        <div class="form-check d-flex align-items-center">
+          <input class="form-check-input me-2" type="radio" name="locationOption" id="detect" value="detect">
+          <label class="form-check-label" for="detect">Detect My Location</label>
+        </div>
+        <small id="detectedLocation" class="text-primary" style="display:none; margin-left: 25px;"></small>
+
+        <!-- Manual option -->
+        <div class="form-check d-flex align-items-center mt-2">
+          <input class="form-check-input me-2" type="radio" name="locationOption" id="manual" value="manual" checked>
+          <label class="form-check-label" for="manual">Select Manually</label>
+        </div>
+
+        <!-- Manual dropdown -->
+        <select class="form-select mt-2" name="city" id="cityDropdown">
+          {% for city in cities %}
+          <option value="{{ city }}">{{ city }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Time -->
+      <div class="mb-3">
+        <label for="time" class="form-label">Time of Travel</label>
+        <input type="time" class="form-control" id="time" name="time" required>
+      </div>
+
+      <!-- Age -->
+      <div class="mb-3">
+        <label for="age" class="form-label">Your Age</label>
+        <input type="number" class="form-control" id="age" name="age" min="10" max="100" required>
+      </div>
+
+      <!-- Gender -->
+      <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" id="gender" name="gender" required>
+          {% for gender in genders %}
+          <option value="{{ gender }}">{{ gender }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-grid gap-2 mt-4">
+        <button type="submit" class="btn btn-primary w-100">Predict Safety</button>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary w-100">Go to Dashboard</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- JavaScript for location detection -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const detectRadio = document.getElementById("detect");
+      const manualRadio = document.getElementById("manual");
+      const detectedLocation = document.getElementById("detectedLocation");
+      const cityDropdown = document.getElementById("cityDropdown");
+
+      detectRadio.addEventListener("change", () => {
+        if (detectRadio.checked) {
+          cityDropdown.style.display = "none";
+          detectedLocation.style.display = "block";
+          detectedLocation.innerText = "Detecting location...";
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error);
+          } else {
+            detectedLocation.innerText = "Geolocation not supported";
+          }
+        }
+      });
+
+      manualRadio.addEventListener("change", () => {
+        detectedLocation.style.display = "none";
+        detectedLocation.innerText = "";
+        cityDropdown.style.display = "block";
+      });
+
+      function success(position) {
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+          .then(response => response.json())
+          .then(data => {
+            let district = data.address.state_district || data.address.county || "District not found";
+            detectedLocation.innerText = "Detected District: " + district;
+
+            for (let option of cityDropdown.options) {
+              if (district.toLowerCase().includes(option.value.toLowerCase())) {
+                cityDropdown.value = option.value;
+                break;
+              }
+            }
+          })
+          .catch(() => {
+            detectedLocation.innerText = "Unable to fetch district";
+          });
+      }
+
+      function error() {
+        detectedLocation.innerText = "Permission denied or error in detecting location";
+      }
+    });
+  </script>
+</body>
+</html>
